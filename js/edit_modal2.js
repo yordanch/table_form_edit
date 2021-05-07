@@ -1,3 +1,9 @@
+// requiere (test in this versions)
+// sweetalert2
+// Bootstrap5.0.0
+// fontAwesome5.15.3
+// jquery-3.6.0.min.js
+
 // definition
 function createModal(opt = {}){
     opt.idModal = opt.idModal==undefined?"asdfg":opt.idModal;
@@ -7,6 +13,7 @@ function createModal(opt = {}){
     opt.buttonAction = opt.buttonAction==undefined?()=>{}:opt.buttonAction;
     opt.buttonSaveText = opt.buttonSaveText==undefined?"Guardar":opt.buttonSaveText;
     opt.buttonSaveClass = opt.buttonSaveClass==undefined?"btn btn-primary":opt.buttonSaveClass;
+    opt.margin = opt.margin==undefined?"m-0":opt.margin;
 
     opt.input = opt.input==undefined?{}:opt.input;
     opt.upper = opt.upper==undefined?false:opt.upper;
@@ -22,7 +29,7 @@ function createModal(opt = {}){
                     '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
                 '</div>'+
                 '<div class="modal-body">'+
-                    createInput(opt.input)+//'<p>Modal body text goes here.</p>'
+                    createInput(opt.input, opt)+//'<p>Modal body text goes here.</p>'
                 '</div>'+
                 '<div class="modal-footer">'+
                 (opt.buttonClose==true?'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'+opt.buttonCloseText+'</button>':'')+
@@ -47,7 +54,7 @@ function changeEvents(param={}){
         }
     }
 }
-function createInput(inputs={}){
+function createInput(inputs={}, opt={}){
     if(Object.keys(inputs).length==0) return "";
     var html = "";
 
@@ -59,13 +66,13 @@ function createInput(inputs={}){
         inputs[val].onkeyup = inputs[val].onkeyup==undefined?null:inputs[val].onkeyup;
 
         if(inputs[val].type=="textarea"){
-            var textArea = '<div class="form-group">'+
+            var textArea = '<div class="form-group '+opt.margin+'">'+
                 '<label for="'+val+'">'+inputs[val].label+'</label>'+
                 '<textarea class="form-control" id="'+val+'" rows="3" placeholder="'+inputs[val].placeholder+'">'+inputs[val].text+'</textarea>'+
             '</div>';
             html += textArea;
         }else if(inputs[val].type=="select"){
-            var select = '<div class="form-group">'+
+            var select = '<div class="form-group '+opt.margin+'">'+
                 '<label for="'+val+'">'+inputs[val].label+'</label>'+
                 '<select class="form-select" id="'+val+'">'+
                     inputs[val].text+
@@ -73,7 +80,7 @@ function createInput(inputs={}){
             '</div>';
             html += select;
         }else if(inputs[val].type=="selectMultiple"){
-            var select = '<div class="form-group">'+
+            var select = '<div class="form-group '+opt.margin+'">'+
                 '<label for="'+val+'">'+inputs[val].label+'</label>'+
                 '<select multiple class="form-control" id="'+val+'">'+
                     inputs[val].text+
@@ -81,7 +88,7 @@ function createInput(inputs={}){
             '</div>';
             html += select;
         }else{
-            var input = '<div class="form-group">'+
+            var input = '<div class="form-group '+opt.margin+'">'+
                 '<label for="'+val+'">'+inputs[val].label+'</label>'+
                 '<input type="'+inputs[val].type+'" class="form-control" id="'+val+'" placeholder="'+inputs[val].placeholder+'" value="'+inputs[val].text+'">' +
             '</div>';
@@ -129,4 +136,41 @@ function getDatasWithSelect(inputs={}){
 //     };
 //     createModal(setting);
 //     $("#"+idModal).modal();
+// }
+
+// function editModal(datas={}){
+//     var idModal = "modalEdit";
+//     var selectItems = '<option value="select1">select 1</option>'+
+//                       '<option value="select2">select 2</option>'+
+//                       '<option value="select3">select 3</option>'+
+//                       '<option value="select4">select 4</option>';
+//     setting = {
+//         idModal: idModal,
+//         title: "Editar",
+//         buttonText: "Actualizar",
+//         upper: true,
+//         margin: "mb-2",
+//         buttonAction: function(){
+//             //get datas
+//             var datastmp = getDatasWithSelect(setting);
+//             datastmp.id = datas.id;
+            
+//             // action
+//             console.log(datastmp);
+//         },
+//         // change datas
+//         input: {
+//             detalle_ed: {text: datas.data1, type: "textarea", placeholder: "Ingrese texto", label: "TextArea"},
+//             monto_ed: {text: datas.data2, type: "number", placeholder: "Ingrese numero", label: "Number", onkeyup: function(){onlyAcceptNumber(this)}},
+//             partes_ed: {text: datas.data3, type: "text", placeholder: "Ingrese texto 2", label: "Text", onkeyup: function(){quitarComa(this, '/,/g', ';');}},
+//             grupo_ed: {text: selectItems, type: "select", label: "Select"},
+//         }
+//     };
+//     createModal(setting);
+
+//     // botstrap 5+
+//     var myModal = new bootstrap.Modal($("#"+idModal)[0]);
+//     myModal.show();
+//     // botstrap <5
+//     // $().modal();
 // }
